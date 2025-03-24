@@ -1,0 +1,139 @@
+/* Reset styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h1, h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+button {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #2575fc, #6a11cb);
+}
+
+input[type="text"], input[type="password"], input[type="number"], input[type="radio"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+    font-size: 1em;
+    color: #555;
+}
+/* Center the container and add some padding */
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f3f3f3;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Style each question box */
+.question-box {
+    padding: 15px;
+    margin: 15px 0;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: left;
+}
+
+/* Style each option so it stays on the same line as the radio button */
+.option {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+}
+
+/* Center the submit button */
+.submit-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Style the Submit button */
+#submitAnswers {
+    padding: 10px 20px;
+    background-color: #4b4cf1;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#submitAnswers:hover {
+    background-color: #3a3ad1;
+}
+.question-box {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.option label {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+}
+
+.option input[type="radio"] {
+    margin-right: 10px;
+}
