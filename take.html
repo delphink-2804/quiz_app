@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Take Quiz</h2>
+        <label for="quizCode">Enter Quiz Code:</label>
+        <input type="text" id="quizCode" required>
+        <button id="startQuiz">Start Quiz</button>
+
+        <form id="quizForm" style="display: none;">
+            <!-- Questions will be dynamically inserted here -->
+        </form>
+
+        <!-- Centered Submit Button -->
+        <div class="submit-container" style="display: none;">
+            <button type="button" id="submitAnswers">Submit Answers</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("startQuiz").addEventListener("click", async () => {
+            const quizCode = document.getElementById("quizCode").value;
+            try {
+                const response = await fetch(`http://localhost:5000/api/quiz/take/${quizCode}`);
+                if (response.ok) {
+                    const quizData = await response.json();
+                    const quizForm = document.getElementById("quizForm");
+
+                    quizForm.innerHTML = ""; // Clear any existing content
+quizData.questions.forEach((question, index) => {
+    quizForm.innerHTML += `
+        <div class="question-box">
+            <label><strong>${index + 1}. ${question.question}</strong></label><br>
+            <div class="option">
+                <label><input type="radio" name="question${index}" value="${question.options[0]}" required> ${question.options[0]}</label>
+            </div>
+            <div class="option">
+                <label><input type="radio" name="question${index}" value="${question.options[1]}"> ${question.options[1]}</label>
+            </div>
+            <div class="option">
+                <label><input type="radio" name="question${index}" value="${question.options[2]}"> ${question.options[2]}</label>
+            </div>
+            <div class="option">
+                <label><input type="radio" name="question${index}" value="${question.options[3]}"> ${question.options[3]}</label>
+            </div>
+        </div>
+    `;
+});
+
+                    quizForm.style.display = "block";
+                    document.querySelector(".submit-container").style.display = "block"; // Show the Submit button container
+                } else {
+                    alert("Invalid quiz code. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error fetching quiz:", error);
+                alert("An error occurred. Please try again later.");
+            }
+        });
+
+        document.getElementById("submitAnswers").addEventListener("click", async () => {
+    const quizCode = document.getElementById("quizCode").value;
+    const formData = new FormData(document.getElementById("quizForm"));
+    const answers = [];
+
+    // Collect answers from formData
+    for (let [key, value] of formData.entries()) {
+        answers.push(value); // Each `value` here is the selected answer as a string
+    }
+
+    try {
+        const response = await fetch(`http://localhost:5000/api/quiz/${quizCode}/submit`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ answers })
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            alert(`Quiz complete! You scored: ${result.score}`);
+            //window.location.href = "result.html";
+        } else {
+            alert("Failed to submit answers. Try again.");
+        }
+    } catch (error) {
+        console.error("Error submitting answers:", error);
+        alert("An error occurred. Please try again later.");
+    }
+});
+
+    </script>
+</body>
+</html>
