@@ -1,0 +1,84 @@
+<!-- conduct.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conduct Quiz</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Conduct Quiz</h2>
+    <label for="numQuestions">Enter number of questions:</label>
+    <input type="number" id="numQuestions" required>
+    <button id="startQuiz">Start</button>
+
+    <form id="quizForm" style="display: none;">
+      <!-- Dynamic questions will be inserted here -->
+    </form>
+
+    <button type="button" id="submitQuiz" style="display: none;">Generate Quiz Code</button>
+  </div>
+
+  <script>
+    let numQuestions;
+    document.getElementById("startQuiz").addEventListener("click", () => {
+      numQuestions = document.getElementById("numQuestions").value;
+      const quizForm = document.getElementById("quizForm");
+      const submitQuiz = document.getElementById("submitQuiz");
+
+      quizForm.innerHTML = "";  // Clear any existing form content
+
+      for (let i = 1; i <= numQuestions; i++) {
+        quizForm.innerHTML += `
+          <label>Question ${i}:</label>
+          <input type="text" name="question${i}" required>
+          <label>Option A:</label>
+          <input type="text" name="optionA${i}" required>
+          <label>Option B:</label>
+          <input type="text" name="optionB${i}" required>
+          <label>Option C:</label>
+          <input type="text" name="optionC${i}" required>
+          <label>Option D:</label>
+          <input type="text" name="optionD${i}" required>
+          <label>Answer:</label>
+          <input type="number" name="answer${i}" required>
+        `;
+      }
+
+      quizForm.style.display = "block";
+      submitQuiz.style.display = "inline-block";
+    });
+
+    document.getElementById("submitQuiz").addEventListener("click", async () => {
+      const questions = [];
+      for (let i = 1; i <= numQuestions; i++) {
+        questions.push({
+          question: document.querySelector(`input[name="question${i}"]`).value,
+          options: [
+            document.querySelector(`input[name="optionA${i}"]`).value,
+            document.querySelector(`input[name="optionB${i}"]`).value,
+            document.querySelector(`input[name="optionC${i}"]`).value,
+            document.querySelector(`input[name="optionD${i}"]`).value
+          ],
+          answer: parseInt(document.querySelector(`input[name="answer${i}"]`).value),
+        });
+      }
+
+      try {
+        const response = await fetch("http://localhost:5000/api/quiz/conduct", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ questions })
+        });
+
+        const result = await response.json();
+        alert(`Quiz created! Quiz Code: ${result.quizCode}`);
+      } catch (error) {
+        alert("Error creating quiz. Please try again.");
+      }
+    });
+  </script>
+</body>
+</html>
